@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import * as https from 'https';
+import { URL } from 'url';
+import * as path from 'path';
 
 function get_select_text() {
 	let editor = vscode.window.activeTextEditor;
@@ -37,50 +39,10 @@ interface OpenAIResponseUsage {
 	total_tokens: number;
 }
 
-async function getOpenAIResponse2(
-	OPENAI_API_KEY: string,
-	message: string,
-	model: string
-): Promise<string> {
-	const data = {
-		model: model,
-		messages: [{ role: 'user', content: message }]
-	};
-
-	const options: https.RequestOptions = {
-		hostname: 'api.openai.com',
-		path: '/v1/chat/completions',
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${OPENAI_API_KEY}`
-		}
-	};
-
-	const response: OpenAIResponse = await new Promise((resolve, reject) => {
-		const req = https.request(options, (res:any) => {
-			let body = '';
-			res.on('data', (chunk: any) => {
-				body += chunk;
-			});
-			res.on('end', () => {
-				const response = JSON.parse(body) as OpenAIResponse;
-				resolve(response);
-			});
-		});
-		req.on('error', (error: any) => {
-			reject(error);
-		});
-		req.write(JSON.stringify(data));
-		req.end();
-	});
-
-	return response.choices[0].message.content;
-}
-
 async function getOpenAIResponse(
 	OPENAI_API_KEY: string,
 	message: string,
+	openai_url: string,
 	model: string
 ): Promise<string> {
 	const data = {
@@ -88,17 +50,22 @@ async function getOpenAIResponse(
 		messages: [{ role: 'user', content: message }]
 	};
 
-	const options: https.RequestOptions = {
-		hostname: 'api.openai.com',
-		path: '/v1/chat/completions',
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${OPENAI_API_KEY}`
-		}
-	};
-
 	try {
+		const url = new URL(openai_url);
+		const hostname = url.hostname;
+		const pathname = url.pathname;
+		const finalPath = path.join(pathname, '/v1/chat/completions');
+
+		const options: https.RequestOptions = {
+			hostname: hostname,
+			path: finalPath,
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${OPENAI_API_KEY}`
+			}
+		};
+		
 		const response: OpenAIResponse = await new Promise((resolve, reject) => {
 			const req = https.request(options, (res: any) => {
 				let body = '';
@@ -151,11 +118,13 @@ async function translate_select(replace: boolean) {
 
 	const model = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-model");
 
+	const openai_url = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-url");
+
 	console.log("translate: " + text);
 
 	const prompt = "translate all text that follows to " + target + ".\n" + text;
 
-	const translation = await (await getOpenAIResponse(apikey as string, prompt, model as string)).trim();
+	const translation = await (await getOpenAIResponse(apikey as string, prompt, openai_url as string, model as string)).trim();
 
 	if (replace) {
 		let editor = vscode.window.activeTextEditor;
