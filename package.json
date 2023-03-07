@@ -13,7 +13,7 @@
     "Korean"
   ],
   "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.75.0"
   },

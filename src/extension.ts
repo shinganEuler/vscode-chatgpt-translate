@@ -135,7 +135,6 @@ async function getOpenAIResponse(
 			throw new Error('Response content is empty');
 		}
 
-		vscode.window.showInformationMessage(`ChatGPT translate: ${content}`);
 		return content;
 	} catch (error:any) {
 		vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message}`);
