@@ -1,0 +1,94 @@
+{
+  "name": "chatgpt-translate",
+  "publisher": "shinganEuler",
+  "displayName": "ChatGPT Translate",
+  "description": "vscode translate extension use chatgpt api",
+  "keywords": [
+    "ChatGPT",
+    "Translate",
+    "english",
+    "chinese",
+    "language",
+    "Japanese",
+    "Korean"
+  ],
+  "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
+  "version": "0.0.4",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:*.*",
+    "onCommand:chatgpt-translate.translate",
+    "onCommand:chatgpt-translate.translate-select"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "hoverProvider": "true",
+    "commands": [
+      {
+        "command": "chatgpt-translate.translate-to-newline",
+        "category": "ChatGPT Translate",
+        "title": "translate select text and write to newline"
+      },
+      {
+        "command": "chatgpt-translate.translate-and-replace",
+        "category": "ChatGPT Translate",
+        "title": "translate select text and replace original text"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "chatgpt-translate.translate-to-newline",
+        "key": "ctrl+alt+t",
+        "mac": "ctrl+cmd+t",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "chatgpt-translate.translate-and-replace",
+        "key": "ctrl+alt+r",
+        "mac": "ctrl+cmd+r",
+        "when": "editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "ChatGPT Translate",
+      "properties": {
+        "chatgpt-translate.chatgpt-api-key": {
+          "type": "string",
+          "default": "Replace With Your ChatGPT API Key",
+          "description": "Replace With Your ChatGPT API Key"
+        },
+        "chatgpt-translate.target-language": {
+          "type": "string",
+          "default": "zh-cn",
+          "description": "Please enter the target language."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.1",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "@vscode/test-electron": "^2.2.2",
+    "eslint": "^8.33.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.5"
+  }
+}
