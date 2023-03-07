@@ -65,7 +65,7 @@ async function getOpenAIResponse(
 				Authorization: `Bearer ${OPENAI_API_KEY}`
 			}
 		};
-		
+
 		const response: OpenAIResponse = await new Promise((resolve, reject) => {
 			const req = https.request(options, (res: any) => {
 				let body = '';
@@ -77,7 +77,7 @@ async function getOpenAIResponse(
 						const response = JSON.parse(body) as OpenAIResponse;
 						resolve(response);
 					} catch (error:any) {
-						vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message}`);
+						vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message} ${body}`);
 						reject(new Error(`Failed to parse response: ${error.message}`));
 					}
 				});
