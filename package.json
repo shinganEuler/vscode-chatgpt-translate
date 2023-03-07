@@ -13,7 +13,7 @@
     "Korean"
   ],
   "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -66,6 +66,11 @@
           "type": "string",
           "default": "zh-cn",
           "description": "Please enter the target language."
+        },
+        "chatgpt-translate.openai-model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "Please enter the model your want use."
         }
       }
     }

@@ -30,6 +30,12 @@ Attention:
 
 ChatGPT API has a free quota of $18 when you setup account. If you exceed the quota, you will be charged for the usage. Please refer to this url for more details: https://openai.com/pricing
 
+### `chatgpt-translate.openai-model`
+
+Enter the OpenAI model to use for the translation. The default value is `gpt-3.5-turbo`.
+
+Please refer to this url for more details: https://platform.openai.com/docs/models
+
 ### `chatgpt-translate.target-language`
 
 The target language to translate the selected text. The default value is `zh-cn`.

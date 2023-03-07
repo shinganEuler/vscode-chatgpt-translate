@@ -149,11 +149,13 @@ async function translate_select(replace: boolean) {
 
 	const target = vscode.workspace.getConfiguration().get("chatgpt-translate.target-language");
 
+	const model = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-model");
+
 	console.log("translate: " + text);
 
 	const prompt = "translate all text that follows to " + target + ".\n" + text;
 
-	const translation = await (await getOpenAIResponse(apikey as string, prompt, "gpt-3.5-turbo")).trim();
+	const translation = await (await getOpenAIResponse(apikey as string, prompt, model as string)).trim();
 
 	if (replace) {
 		let editor = vscode.window.activeTextEditor;
