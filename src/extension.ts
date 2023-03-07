@@ -151,7 +151,7 @@ async function translate_select(replace: boolean) {
 
 	console.log("translate: " + text);
 
-	const prompt = "translate " + target + ". " + text;
+	const prompt = "translate all text that follows to " + target + ".\n" + text;
 
 	const translation = await (await getOpenAIResponse(apikey as string, prompt, "gpt-3.5-turbo")).trim();
 

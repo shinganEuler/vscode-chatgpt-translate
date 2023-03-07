@@ -16,3 +16,5 @@ echo "New version: $NEW_VERSION"
 
 vsce publish
 
+git add . && git commit -m update && git push
+
