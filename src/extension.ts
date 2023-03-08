@@ -54,7 +54,7 @@ async function getOpenAIResponse(
 		const url = new URL(openai_url);
 		const hostname = url.hostname;
 		const pathname = url.pathname;
-		const finalPath = path.join(pathname, '/v1/chat/completions');
+		const finalPath = path.join(pathname, '/v1/chat/completions').replace(/\\/g, '/');
 
 		const options: https.RequestOptions = {
 			hostname: hostname,
