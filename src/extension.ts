@@ -47,7 +47,8 @@ async function getOpenAIResponse(
 ): Promise<string> {
 	const data = {
 		model: model,
-		messages: [{ role: 'user', content: message }]
+		messages: [{ role: 'user', content: message }],
+		temperature: 0,
 	};
 
 	try {
@@ -62,13 +63,14 @@ async function getOpenAIResponse(
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${OPENAI_API_KEY}`
+				'Authorization': `Bearer ${OPENAI_API_KEY}`
 			}
 		};
 
 		const response: OpenAIResponse = await new Promise((resolve, reject) => {
 			const req = https.request(options, (res: any) => {
 				let body = '';
+				res.setEncoding('utf8');
 				res.on('data', (chunk: any) => {
 					body += chunk;
 				});
@@ -122,7 +124,7 @@ async function translate_select(replace: boolean) {
 
 	console.log("translate: " + text);
 
-	const prompt = "translate all text that follows to " + target + ".\n" + text;
+	const prompt = "translate all text that follows to " + target + ". " + text;
 
 	const translation = await (await getOpenAIResponse(apikey as string, prompt, openai_url as string, model as string)).trim();
 
