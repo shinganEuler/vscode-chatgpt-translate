@@ -55,11 +55,10 @@ async function getOpenAIResponse(
 		const url = new URL(openai_url);
 		const hostname = url.hostname;
 		const pathname = url.pathname;
-		const finalPath = path.join(pathname, '/v1/chat/completions').replace(/\\/g, '/');
 
 		const options: https.RequestOptions = {
 			hostname: hostname,
-			path: finalPath,
+			path: pathname,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -120,7 +119,7 @@ async function translate_select(replace: boolean) {
 
 	const model = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-model");
 
-	const openai_url = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-url");
+	const openai_url = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-full-url");
 
 	console.log("translate: " + text);
 

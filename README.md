@@ -42,9 +42,9 @@ The target language to translate the selected text. The default value is `zh-cn`
 
 To find the language code, please refer to this url: https://cloud.google.com/translate/docs/languages
 
-### `chatgpt-translate.openai-url`
+### `chatgpt-translate.openai-full-url`
 
-If your direct access to the OpenAI API is blocked, you can set a custom OpenAI API url to use. The default value is `https://api.openai.com`.
+If your direct access to the OpenAI API is blocked, you can set a custom OpenAI API url to use. The default value is `https://api.openai.com/v1/chat/completions`.
 
 ## Release Notes
 
