@@ -13,7 +13,7 @@
     "Korean"
   ],
   "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -85,7 +85,7 @@
         "chatgpt-translate.azure-key": {
           "type": "string",
           "default": "",
-          "description": "Please enter your azure key. Default: empty. You can get your azure key from https://portal.azure.com/"
+          "description": "Please enter your azure key. Default: empty."
         },
         "chatgpt-translate.api-platform": {
           "type": "string",

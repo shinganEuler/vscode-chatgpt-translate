@@ -46,7 +46,23 @@ To find the language code, please refer to this url: https://cloud.google.com/tr
 
 If your direct access to the OpenAI API is blocked, you can set a custom OpenAI API url to use. The default value is `https://api.openai.com/v1/chat/completions`.
 
+### `chatgpt-translate.azure-key`
+
+To use this extension, you need to create a Azure account. Then, you need to create a openai key and set it to the `chatgpt-translate.azure-key` setting. 
+
+### `azure-openai-full-url`
+
+Your custom Azure OpenAI API url. You azure openai url is like "https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01".
+
+### `chatgpt-translate.api-platform`
+
+The api platform you want to use. You can use openai or azure-openai.
+
 ## Release Notes
+
+### 0.0.14
+
+support azure openai api
 
 ### 0.0.1
 
