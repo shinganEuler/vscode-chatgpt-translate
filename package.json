@@ -13,7 +13,7 @@
     "Korean"
   ],
   "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -70,12 +70,31 @@
         "chatgpt-translate.openai-model": {
           "type": "string",
           "default": "gpt-3.5-turbo",
-          "description": "Please enter the model your want use. Default: gpt-3.5-turbo"
+          "description": "Please enter the model your want use. Default: gpt-3.5-turbo. You can get other model from https://platform.openai.com/docs/models/gpt-3"
         },
         "chatgpt-translate.openai-full-url": {
           "type": "string",
           "default": "https://api.openai.com/v1/chat/completions",
-          "description": "(legacy)Please enter the custom openai full url. Default: https://api.openai.com/v1/chat/completions"
+          "description": "Please enter the custom openai full url. Default: https://api.openai.com/v1/chat/completions"
+        },
+        "chatgpt-translate.azure-openai-full-url": {
+          "type": "string",
+          "default": "",
+          "description": "Please enter your custom azure openai full url. Default: empty. You azure openai url is like https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01"
+        },
+        "chatgpt-translate.azure-key": {
+          "type": "string",
+          "default": "",
+          "description": "Please enter your azure key. Default: empty. You can get your azure key from https://portal.azure.com/"
+        },
+        "chatgpt-translate.api-platform": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "azure-openai"
+          ],
+          "default": "openai",
+          "description": "Please enter the api platform you want use. Default: openai. You can use openai or azure-openai."
         }
       }
     }
@@ -100,5 +119,8 @@
     "glob": "^8.1.0",
     "mocha": "^10.1.0",
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "openai-translate": "^1.0.8"
   }
 }

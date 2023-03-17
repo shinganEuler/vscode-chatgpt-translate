@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
-import * as https from 'https';
-import { URL } from 'url';
-import * as path from 'path';
+const OpenAITranslate = require("openai-translate");
 
 function get_select_text() {
 	let editor = vscode.window.activeTextEditor;
@@ -13,119 +11,63 @@ function get_select_text() {
 	return editor.document.getText(selection);
 }
 
-interface OpenAIResponse {
-	id: string;
-	object: string;
-	created: number;
-	model: string;
-	choices: OpenAIResponseChoice[];
-	usage: OpenAIResponseUsage;
-}
-
-interface OpenAIResponseChoice {
-	index: number;
-	finish_reason: string;
-	message: OpenAIResponseMessage;
-}
-
-interface OpenAIResponseMessage {
-	role: string;
-	content: string;
-}
-
-interface OpenAIResponseUsage {
-	prompt_tokens: number;
-	completion_tokens: number;
-	total_tokens: number;
-}
-
 async function getOpenAIResponse(
 	OPENAI_API_KEY: string,
 	message: string,
 	openai_url: string,
-	model: string
+	model: string,
+	target_langualge: string
 ): Promise<string> {
-	const data = {
-		model: model,
-		messages: [{ role: 'user', content: message }],
-		temperature: 0,
-	};
-
 	try {
-		const url = new URL(openai_url);
-		const hostname = url.hostname;
-		const pathname = url.pathname;
-
-		const options: https.RequestOptions = {
-			hostname: hostname,
-			path: pathname,
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${OPENAI_API_KEY}`
-			}
-		};
-
-		const response: OpenAIResponse = await new Promise((resolve, reject) => {
-			const req = https.request(options, (res: any) => {
-				let body = '';
-				res.setEncoding('utf8');
-				res.on('data', (chunk: any) => {
-					body += chunk;
-				});
-				res.on('end', () => {
-					try {
-						const response = JSON.parse(body) as OpenAIResponse;
-						resolve(response);
-					} catch (error:any) {
-						vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message} ${body}`);
-						reject(new Error(`Failed to parse response: ${error.message}`));
-					}
-				});
-			});
-			req.on('error', (error: any) => {
-				vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message}`);
-				reject(new Error(`Request failed: ${error.message}`));
-			});
-			req.write(JSON.stringify(data));
-			req.end();
-		});
-
-		if (response.choices.length === 0) {
-			vscode.window.showErrorMessage(`ChatGPT translate Error: No response choices found`);
-			throw new Error('No response choices found');
-		}
-
-		const content = response.choices[0].message.content;
-
-		if (content.trim() === '') {
-			vscode.window.showErrorMessage(`ChatGPT translate Error: Response content is empty`);
-			throw new Error('Response content is empty');
-		}
-
-		return content;
-	} catch (error:any) {
+		return await OpenAITranslate.translateWithOpenAI(OPENAI_API_KEY, message, openai_url, model, target_langualge);
+	} catch (error: any) {
 		vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message}`);
-		throw new Error(`Failed to get OpenAI response: ${error.message}`);
+		throw new Error(`ChatGPT translate Error: ${error.message}`);
+	}
+}
+
+async function getAzureOpenAIResponse(
+	AZURE_KEY: string,
+	message: string,
+	azure_openai_url: string,
+	target_langualge: string
+): Promise<string> {
+	try {
+		return await OpenAITranslate.translateWithAzureOpenAI(AZURE_KEY, message, azure_openai_url, target_langualge);
+	} catch (error: any) {
+		vscode.window.showErrorMessage(`ChatGPT translate Error: ${error.message}`);
+		throw new Error(`ChatGPT translate Error: ${error.message}`);
 	}
 }
 
 async function translate_select(replace: boolean) {
 	const apikey = vscode.workspace.getConfiguration().get("chatgpt-translate.chatgpt-api-key");
-
-	const text = get_select_text();
-
-	const target = vscode.workspace.getConfiguration().get("chatgpt-translate.target-language");
-
 	const model = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-model");
-
 	const openai_url = vscode.workspace.getConfiguration().get("chatgpt-translate.openai-full-url");
+
+	const azure_apikey = vscode.workspace.getConfiguration().get("chatgpt-translate.azure-key");
+	const azure_url = vscode.workspace.getConfiguration().get("chatgpt-translate.azure-openai-full-url");
+
+	const api_platform = vscode.workspace.getConfiguration().get("chatgpt-translate.api-platform");
+	const target_langualge = vscode.workspace.getConfiguration().get("chatgpt-translate.target-language");
+	const text = get_select_text();
 
 	console.log("translate: " + text);
 
-	const prompt = "translate all text that follows to " + target + ". " + text;
-
-	const translation = await (await getOpenAIResponse(apikey as string, prompt, openai_url as string, model as string)).trim();
+	let translation = "";
+	
+	switch (api_platform) {
+		case "openai":
+			translation = await (await getOpenAIResponse(apikey as string, text, openai_url as string, model as string, target_langualge as string)).trim();
+			break;
+		case "azure-openai":
+			translation = await (await getAzureOpenAIResponse(azure_apikey as string, text, azure_url as string, target_langualge as string)).trim();
+			break;
+		default:
+			vscode.window.showErrorMessage(`ChatGPT translate Error: Unknown API platform: ${api_platform}`);
+			throw new Error(`Unknown API platform: ${api_platform}`);
+			break;
+	}
 
 	if (replace) {
 		let editor = vscode.window.activeTextEditor;
@@ -163,7 +105,7 @@ export function activate(context: vscode.ExtensionContext) {
 		translate_select(true);
 	});
 
-	context.subscriptions.push(translateToNewlineDisposable);
+	context.subscriptions.push(translateToNewlineDisposable);	
 	context.subscriptions.push(translateAndReplaceDisposable);
 }
 
