@@ -60,6 +60,10 @@ The api platform you want to use. You can use openai or azure-openai.
 
 ## Release Notes
 
+### 0.0.15
+
+support large token
+
 ### 0.0.14
 
 support azure openai api
