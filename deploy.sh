@@ -12,7 +12,7 @@ NEW_VERSION=$(npx semver $CURRENT_VERSION -i patch)
 npx json -I -f package.json -e "this.version=\"$NEW_VERSION\""
 
 # Output the new version number
-echo "New version: $NEW_VERSION"
+echo "new version: $NEW_VERSION"
 
 vsce publish
 
