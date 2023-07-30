@@ -13,7 +13,7 @@
     "Korean"
   ],
   "repository": "https://github.com/shinganEuler/vscode-chatgpt-translate",
-  "version": "0.0.16",
+  "version": "0.0.18",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -80,7 +80,7 @@
         "chatgpt-translate.azure-openai-full-url": {
           "type": "string",
           "default": "",
-          "description": "Please enter your custom azure openai full url. Default: empty. You azure openai url is like https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01"
+          "description": "Please enter your custom azure openai full url. Default: empty. You azure openai url is like https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=2023-05-15"
         },
         "chatgpt-translate.azure-key": {
           "type": "string",
@@ -121,6 +121,6 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "openai-translate": "^1.0.8"
+    "openai-translate": "^1.0.12"
   }
 }

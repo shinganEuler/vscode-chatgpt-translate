@@ -52,13 +52,19 @@ To use this extension, you need to create a Azure account. Then, you need to cre
 
 ### `azure-openai-full-url`
 
-Your custom Azure OpenAI API url. You azure openai url is like "https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01".
+Your custom Azure OpenAI API url. You azure openai url is like https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=2023-05-15.
 
 ### `chatgpt-translate.api-platform`
 
 The api platform you want to use. You can use openai or azure-openai.
 
 ## Release Notes
+
+### 0.0.17
+
+update azure api, now you should use chat/completions instead of completions, like
+
+https://YOUR_ENDPOINT_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=2023-05-15
 
 ### 0.0.15
 

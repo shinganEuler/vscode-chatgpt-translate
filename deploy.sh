@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NODE_OPTIONS=--openssl-legacy-provider
+#export NODE_OPTIONS=--openssl-legacy-provider
 
 # Read the current version from package.json
 CURRENT_VERSION=$(node -p "require('./package.json').version")
